@@ -5,6 +5,8 @@ import chat.core.Subject;
 import chat.model.Message;
 import chat.model.SystemMessage;
 
+import chat.exceptions.ChatConnectionException;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,7 +24,7 @@ public class ChatServer implements Subject {
     // Thread-safe Collection to store our observers (connected clients)
     private Set<Observer> activeClients = Collections.synchronizedSet(new HashSet<>());
 
-    public void startServer() {
+    public void startServer() throws ChatConnectionException {
         System.out.println("Starting Chat Server on port " + PORT + "...");
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is waiting for connections...");
@@ -38,7 +40,7 @@ public class ChatServer implements Subject {
             }
         } catch (IOException e) {
             System.err.println("Server Exception: " + e.getMessage());
-            e.printStackTrace();
+            throw new ChatConnectionException("Failed to bind to port " + PORT, e);
         }
     }
 
@@ -77,6 +79,11 @@ public class ChatServer implements Subject {
 
     public static void main(String[] args) {
         ChatServer server = new ChatServer();
-        server.startServer();
+        try {
+            server.startServer();
+        } catch (ChatConnectionException e) {
+            System.err.println("Fatal Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

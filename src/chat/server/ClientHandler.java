@@ -5,6 +5,8 @@ import chat.core.User;
 import chat.model.Message;
 import chat.model.UserMessage;
 
+import chat.exceptions.InvalidMessageException;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -44,7 +46,11 @@ public class ClientHandler extends User implements Runnable, Observer {
             while (isRunning) {
                 Object obj = in.readObject();
                 if (obj instanceof String) {
-                    handleMessage((String) obj);
+                    try {
+                        handleMessage((String) obj);
+                    } catch (InvalidMessageException ime) {
+                        System.err.println("Warning: " + ime.getMessage() + " from " + username);
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -57,6 +63,10 @@ public class ClientHandler extends User implements Runnable, Observer {
 
     @Override
     public void handleMessage(String messageContent) {
+        if (messageContent == null || messageContent.trim().isEmpty()) {
+            throw new InvalidMessageException("Message cannot be empty.");
+        }
+
         if ("/quit".equalsIgnoreCase(messageContent.trim())) {
             isRunning = false; // Terminates the thread loop
         } else {
