@@ -51,60 +51,79 @@ public class ChatGUIClient {
     }
 
     private void setupGUI() {
-        // Set system Look and Feel for a more modern appearance
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Fallback to default if system look fails
-        }
+        } catch (Exception e) {}
 
-        frame = new JFrame("Real-Time Chat - " + username);
-        frame.setSize(600, 500);
-        frame.setLocationRelativeTo(null); // Center on screen
+        frame = new JFrame("Real-Time Chat");
+        frame.setSize(700, 550);
+        frame.setLocationRelativeTo(null); 
+        frame.getContentPane().setBackground(new Color(245, 246, 250));
+
+        // HEADER PANEL
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(new Color(41, 128, 185)); // Deep Blue
+        headerPanel.setPreferredSize(new Dimension(frame.getWidth(), 60));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         
+        JLabel headerLabel = new JLabel("💬 Live Chat Room");
+        headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        headerLabel.setForeground(Color.WHITE);
+        
+        JLabel userLabel = new JLabel("Logged in as: " + username);
+        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        userLabel.setForeground(new Color(200, 225, 255));
+        
+        headerPanel.add(headerLabel, BorderLayout.WEST);
+        headerPanel.add(userLabel, BorderLayout.EAST);
+
+        // CHAT AREA
         chatArea = new JTextArea();
         chatArea.setEditable(false);
         chatArea.setLineWrap(true);
         chatArea.setWrapStyleWord(true);
         chatArea.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-        chatArea.setBackground(new Color(245, 245, 245)); // Light gray background
-        chatArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
+        chatArea.setBackground(Color.WHITE); 
+        chatArea.setMargin(new Insets(15, 15, 15, 15)); // Inner text padding
         
         JScrollPane scrollPane = new JScrollPane(chatArea);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Live Chat Room"));
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 225), 1)); 
+        
+        // Wrapper for chat to give it a nice outer margin matching background
+        JPanel chatPanelWrapper = new JPanel(new BorderLayout());
+        chatPanelWrapper.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        chatPanelWrapper.setBackground(new Color(245, 246, 250));
+        chatPanelWrapper.add(scrollPane, BorderLayout.CENTER);
 
+        // BOTTOM PANEL (User Input)
         inputField = new JTextField();
         inputField.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         inputField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                BorderFactory.createEmptyBorder(10, 15, 10, 15)
         ));
-        // Allow pressing 'Enter' to send
         inputField.addActionListener(e -> sendMessage());
 
         sendButton = new JButton("Send");
-        sendButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        sendButton.setBackground(new Color(60, 130, 240)); // Blue button
+        sendButton.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        sendButton.setBackground(new Color(41, 128, 185)); // Deep Blue
         sendButton.setForeground(Color.WHITE); // White text
         sendButton.setFocusPainted(false);
         sendButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         sendButton.addActionListener(e -> sendMessage());
+        sendButton.setPreferredSize(new Dimension(100, 45));
 
-        JPanel bottomPanel = new JPanel(new BorderLayout(10, 0));
-        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Outer padding
+        JPanel bottomPanel = new JPanel(new BorderLayout(15, 0));
+        bottomPanel.setBackground(new Color(245, 246, 250));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 15, 15));
         bottomPanel.add(inputField, BorderLayout.CENTER);
         bottomPanel.add(sendButton, BorderLayout.EAST);
 
-        frame.setLayout(new BorderLayout(10, 10)); // Gap between components
-        frame.add(scrollPane, BorderLayout.CENTER);
+        // ASSEMBLE FRAME
+        frame.setLayout(new BorderLayout());
+        frame.add(headerPanel, BorderLayout.NORTH);
+        frame.add(chatPanelWrapper, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
-        
-        // Add a clean title label at the top
-        JLabel headerLabel = new JLabel("Logged in as: " + username, SwingConstants.CENTER);
-        headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        headerLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        frame.add(headerLabel, BorderLayout.NORTH);
-
         // Handle window close smoothly
         frame.addWindowListener(new WindowAdapter() {
             @Override
