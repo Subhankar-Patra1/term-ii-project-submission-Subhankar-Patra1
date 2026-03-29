@@ -66,7 +66,7 @@ public class ChatGUIClient {
         headerPanel.setPreferredSize(new Dimension(frame.getWidth(), 60));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         
-        JLabel headerLabel = new JLabel("💬 Live Chat Room");
+        JLabel headerLabel = new JLabel("Live Chat Room");
         headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
         headerLabel.setForeground(Color.WHITE);
         
@@ -106,8 +106,7 @@ public class ChatGUIClient {
 
         sendButton = new JButton("Send");
         sendButton.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        sendButton.setBackground(new Color(41, 128, 185)); // Deep Blue
-        sendButton.setForeground(Color.WHITE); // White text
+        sendButton.setForeground(new Color(41, 128, 185)); // Deep Blue text for visibility
         sendButton.setFocusPainted(false);
         sendButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         sendButton.addActionListener(e -> sendMessage());
