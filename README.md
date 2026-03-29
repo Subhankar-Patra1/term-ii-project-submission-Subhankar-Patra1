@@ -43,7 +43,25 @@ The system follows a client-server architecture with a pure console-based interf
 ---
 
 ## How to Run
-(To be updated once the implementation is complete)
+
+### 1. Compile the Project 
+Ensure you have the JDK installed. From the root of the project directory (`term-ii-project-submission-Subhankar-Patra1`), execute:
+```powershell
+javac -d bin src/chat/core/*.java src/chat/model/*.java src/chat/exceptions/*.java src/chat/server/*.java src/chat/client/*.java
+```
+
+### 2. Start the Server
+Open a terminal and start the main chat server background instance:
+```powershell
+java -cp bin chat.server.ChatServer
+```
+
+### 3. Start the Clients
+Open new, separate terminal tabs for each user you want to simulate. To run the Graphical User Interface (GUI) client:
+```powershell
+java -cp bin chat.client.ChatGUIClient
+```
+*(Alternatively, you can run the Console-only version using: `java -cp bin chat.client.ChatClient`)*
 
 ---
 
