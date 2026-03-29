@@ -57,11 +57,17 @@ java -cp bin chat.server.ChatServer
 ```
 
 ### 3. Start the Clients
-Open new, separate terminal tabs for each user you want to simulate. To run the Graphical User Interface (GUI) client:
+Open new, separate terminal tabs for each user you want to simulate. 
+
+**To run the enhanced Graphical User Interface (GUI) client:**
 ```powershell
 java -cp bin chat.client.ChatGUIClient
 ```
-*(Alternatively, you can run the Console-only version using: `java -cp bin chat.client.ChatClient`)*
+
+**To run the standard Console-only client:**
+```powershell
+java -cp bin chat.client.ChatClient
+```
 
 ---
 
